@@ -40,10 +40,15 @@ public abstract class BaseFragment extends Fragment {
                 BaseFragment.this.onRefresh();
             }
         });
+        mSwipeRefreshLayout.setColorSchemeColors(getColorSchemeColors());
         mFrameLayout = findViewById(R.id.fl_content);
         addViewToContent(getContentView(), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         afterCreateView(savedInstanceState);
         return mSwipeRefreshLayout;
+    }
+
+    protected int[] getColorSchemeColors() {
+        return new int[]{Color.RED};
     }
 
     @Override

@@ -40,7 +40,6 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
     @Override
     public boolean isRefreshEnable() {
         return true;
-
     }
 
     /**
