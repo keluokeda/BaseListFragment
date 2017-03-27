@@ -77,7 +77,7 @@ public abstract class BaseDataFragment<T extends Parcelable> extends BaseFragmen
 
     @Override
     protected void onRefresh() {
-        Subscription subscription = getData().observeOn(AndroidSchedulers.mainThread()).observeOn(Schedulers.io()).subscribe(new Observer<T>() {
+        Subscription subscription = getData().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<T>() {
             @Override
             public void onCompleted() {
                 endRefresh();
