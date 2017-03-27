@@ -42,6 +42,11 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
         return true;
     }
 
+
+    public boolean isLoadMoreEnable() {
+        return true;
+    }
+
     /**
      * 当view 初始化完成 并且当前 fragment可见 并且懒加载没完成 执行此方法 加载数据
      */
@@ -70,7 +75,6 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
         mRecyclerView = new RecyclerView(getActivity());
         return mRecyclerView;
     }
-
 
 
     private void init() {
@@ -109,12 +113,14 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
                 convertData(helper, item);
             }
         };
-        mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                loadData();
-            }
-        }, mRecyclerView);
+        if (isLoadMoreEnable()) {
+            mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                @Override
+                public void onLoadMoreRequested() {
+                    loadData();
+                }
+            }, mRecyclerView);
+        }
         mBaseQuickAdapter.disableLoadMoreIfNotFullPage(mRecyclerView);
         mBaseQuickAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
     }
@@ -190,7 +196,7 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
     }
 
     /**
-     * 添加数据到 recyclerview 中
+     * 添加数据到 recycler view 中
      */
     protected void addDataToRecyclerView(List<T> list) {
         mBaseQuickAdapter.addData(list);
