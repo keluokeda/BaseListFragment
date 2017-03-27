@@ -52,7 +52,12 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
     protected void afterCreateView(Bundle bundle) {
         isCreateViewDone = true;
         init();
+        initViews(bundle);
         onLazyLoad();
+    }
+
+    protected void initViews(Bundle bundle) {
+
     }
 
     @Override
@@ -60,6 +65,7 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
         mRecyclerView = new RecyclerView(getActivity());
         return mRecyclerView;
     }
+
 
 
     private void init() {
@@ -144,6 +150,15 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
     }
 
 
+    protected RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
+    protected BaseQuickAdapter<T, BaseViewHolder> getTBaseQuickAdapter() {
+        return mBaseQuickAdapter;
+    }
+
+
     /**
      * 加载数据完成 并且还有数据
      */
@@ -209,7 +224,7 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
         mBaseQuickAdapter.addData(list);
     }
 
-    protected void setNewData(List<T> list){
+    protected void setNewData(List<T> list) {
         mBaseQuickAdapter.setNewData(list);
     }
 
