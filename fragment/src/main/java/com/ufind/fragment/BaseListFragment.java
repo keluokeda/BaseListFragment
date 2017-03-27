@@ -37,6 +37,11 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
         onLazyLoad();
     }
 
+    @Override
+    public boolean isRefreshEnable() {
+        return true;
+    }
+
     /**
      * 当view 初始化完成 并且当前 fragment可见 并且懒加载没完成 执行此方法 加载数据
      */
