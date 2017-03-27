@@ -71,6 +71,10 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract View getContentView();
 
+    protected View getRootView() {
+        return mSwipeRefreshLayout;
+    }
+
 
     protected void addViewToContent(View view, FrameLayout.LayoutParams layoutParams) {
         mFrameLayout.addView(view, layoutParams);

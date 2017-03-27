@@ -37,8 +37,6 @@ public abstract class BaseDataFragment<T extends Parcelable> extends BaseFragmen
 
 
 
-
-
     protected abstract int getLayoutId();
 
     /**
@@ -53,7 +51,6 @@ public abstract class BaseDataFragment<T extends Parcelable> extends BaseFragmen
 
     @Override
     protected void afterCreateView(Bundle bundle) {
-        super.afterCreateView(bundle);
         isCreateViewDone = true;
         afterCreateView(bundle);
         onLazyLoad();
