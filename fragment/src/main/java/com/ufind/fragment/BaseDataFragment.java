@@ -3,6 +3,7 @@ package com.ufind.fragment;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.View;
 
 import rx.Observable;
 import rx.Observer;
@@ -24,6 +25,22 @@ public abstract class BaseDataFragment<T extends Parcelable> extends BaseFragmen
         onLazyLoad();
     }
 
+    @Override
+    public boolean isRefreshEnable() {
+        return false;
+    }
+
+    @Override
+    protected View getContentView() {
+        return View.inflate(getActivity(),getLayoutId(),null);
+    }
+
+
+
+
+
+    protected abstract int getLayoutId();
+
     /**
      * 当view 初始化完成 并且当前 fragment可见 并且懒加载没完成 执行此方法 加载数据
      */
@@ -38,7 +55,12 @@ public abstract class BaseDataFragment<T extends Parcelable> extends BaseFragmen
     protected void afterCreateView(Bundle bundle) {
         super.afterCreateView(bundle);
         isCreateViewDone = true;
+        afterCreateView(bundle);
         onLazyLoad();
+    }
+
+    protected void initViews(Bundle bundle){
+
     }
 
     /**
