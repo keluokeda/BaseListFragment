@@ -18,13 +18,14 @@ public class DataFragment extends BaseDataFragment<ParcelableString> {
 
     @Override
     protected void bindData(ParcelableString parcelableString) {
+        mTextView = findViewById(R.id.tv_content);
         mTextView.setText(parcelableString.getContent());
     }
 
+
     @Override
-    protected View getContentView() {
-        mTextView = new TextView(getActivity());
-        return mTextView;
+    protected int getLayoutId() {
+        return R.layout.layout_text;
     }
 
     @Override

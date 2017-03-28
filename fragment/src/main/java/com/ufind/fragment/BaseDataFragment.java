@@ -31,7 +31,7 @@ public abstract class BaseDataFragment<T extends Parcelable> extends BaseFragmen
     }
 
     @Override
-    protected View getContentView() {
+    protected final View getContentView() {
         return View.inflate(getActivity(),getLayoutId(),null);
     }
 

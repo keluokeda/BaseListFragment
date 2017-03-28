@@ -11,6 +11,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,9 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
 
     @Override
     protected final View getContentView() {
-        mRecyclerView = new RecyclerView(getActivity());
+        if (mRecyclerView == null) {
+            mRecyclerView = new RecyclerView(getActivity());
+        }
         return mRecyclerView;
     }
 
@@ -122,7 +125,14 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
             }, mRecyclerView);
         }
         mBaseQuickAdapter.disableLoadMoreIfNotFullPage(mRecyclerView);
-        mBaseQuickAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mBaseQuickAdapter.openLoadAnimation(getRecyclerViewLoadAnimation());
+    }
+
+    /**
+     * item动画效果
+     */
+    protected int getRecyclerViewLoadAnimation() {
+        return BaseQuickAdapter.SLIDEIN_BOTTOM;
     }
 
     @CallSuper
@@ -141,12 +151,19 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
 
             @Override
             public void onError(Throwable e) {
-                loadDataFail();
+                loadDataFail(e);
             }
 
             @Override
             public void onNext(List<T> ts) {
                 if (ts == null || ts.isEmpty()) {
+                    if (mBaseQuickAdapter.getData().isEmpty()) {
+                        //没有数据
+                        if (getEmptyViewResId() != 0 && mBaseQuickAdapter.getEmptyView() == null) {
+                            Logger.d("set empty view");
+                            mBaseQuickAdapter.setEmptyView(getEmptyViewResId());
+                        }
+                    }
                     loadDataEnd();
                     return;
                 }
@@ -158,6 +175,13 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
         addSubscription(s);
 
 
+    }
+
+    /**
+     * 没有数据的时候展示的layout
+     */
+    protected int getEmptyViewResId() {
+        return 0;
     }
 
 
@@ -173,6 +197,7 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
     /**
      * 加载数据完成 并且还有数据
      */
+    @CallSuper
     protected void loadDataComplete() {
         mBaseQuickAdapter.loadMoreComplete();
         mSwipeRefreshLayout.setRefreshing(false);
@@ -181,6 +206,7 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
     /**
      * 加载数据完成 没有更多数据
      */
+    @CallSuper
     protected void loadDataEnd() {
         mBaseQuickAdapter.loadMoreEnd();
         mSwipeRefreshLayout.setRefreshing(false);
@@ -189,10 +215,10 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
     /**
      * 加载数据失败
      */
-    protected void loadDataFail() {
+    @CallSuper
+    protected void loadDataFail(Throwable throwable) {
         mBaseQuickAdapter.loadMoreFail();
         mSwipeRefreshLayout.setRefreshing(false);
-
     }
 
     /**
@@ -209,7 +235,7 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
     protected abstract void convertData(BaseViewHolder baseViewHolder, T t);
 
     /**
-     * item id
+     * recycler view item id
      */
     protected abstract int getItemLayoutId();
 
