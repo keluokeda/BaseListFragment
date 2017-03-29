@@ -125,13 +125,16 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
                 convertData(helper, item);
             }
         };
-        mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                loadData();
-            }
-        }, mRecyclerView);
-        mBaseQuickAdapter.setEnableLoadMore(isLoadMoreEnable());
+
+        if (isLoadMoreEnable()) {
+            mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                @Override
+                public void onLoadMoreRequested() {
+                    loadData();
+                }
+            }, mRecyclerView);
+        }
+
 
         mBaseQuickAdapter.disableLoadMoreIfNotFullPage(mRecyclerView);
         mBaseQuickAdapter.openLoadAnimation(getRecyclerViewLoadAnimation());
@@ -272,6 +275,10 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
 
     protected void setNewData(List<T> list) {
         mBaseQuickAdapter.setNewData(list);
+    }
+
+    protected void addData(int position, T entity) {
+        mBaseQuickAdapter.addData(position, entity);
     }
 
 
