@@ -43,9 +43,18 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
         return true;
     }
 
-
+    /**
+     * 是否可以加载更多
+     */
     public boolean isLoadMoreEnable() {
         return true;
+    }
+
+    /**
+     * 设置是否可以加载更多
+     */
+    public void setLoadMoreEnable(boolean enable) {
+        mBaseQuickAdapter.setEnableLoadMore(enable);
     }
 
     /**
@@ -116,14 +125,14 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
                 convertData(helper, item);
             }
         };
-        if (isLoadMoreEnable()) {
-            mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                @Override
-                public void onLoadMoreRequested() {
-                    loadData();
-                }
-            }, mRecyclerView);
-        }
+        mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                loadData();
+            }
+        }, mRecyclerView);
+        mBaseQuickAdapter.setEnableLoadMore(isLoadMoreEnable());
+
         mBaseQuickAdapter.disableLoadMoreIfNotFullPage(mRecyclerView);
         mBaseQuickAdapter.openLoadAnimation(getRecyclerViewLoadAnimation());
     }
