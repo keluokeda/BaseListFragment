@@ -45,7 +45,7 @@ public abstract class BaseFragment extends Fragment {
         mFrameLayout = findViewById(R.id.fl_content);
         addViewToContent(getContentView(), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         afterCreateView(savedInstanceState);
-        return mSwipeRefreshLayout;
+        return view;
     }
 
     protected int[] getColorSchemeColors() {
